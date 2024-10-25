@@ -1,64 +1,49 @@
 import React, { useState } from 'react';
 import logo from '../../../image/Screenshot (132).png';
-import underline from '../../../image/assets/nav_underline.svg';
 import AnchorLink from 'react-anchor-link-smooth-scroll';
-import menu_open from '../../../image/assets/menu_open.svg'
-import menu_close from '../../../image/assets/menu_close.svg'
-const NavBar = () => {
-  const [menu, setMenu] = useState("home");
+import menu_open from '../../../image/assets/menu_open.svg';
+import menu_close from '../../../image/assets/menu_close.svg';
+
+const NavBar = ({ toggleDarkMode, darkMode }) => {
+  const [menu, setMenu] = useState('home');
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
-    <div className="navbar flex items-center justify-between px-6 py-4 bg-gray-800">
-      {/* Logo Section */}
-      <div className="logo">
-        <img className="h-6 w-8" src={logo} alt="Logo" />
-        <img src={menu_open}alt="" />
-        
-        {/* Adjusted size */}
+    <nav className="navbar flex justify-between items-center p-4 bg-gray-800 dark:bg-gray-900 text-white dark:text-gray-200">
+      <div className="flex items-center space-x-4">
+        <img className="h-8 w-10" src={logo} alt="Logo" />
+        <h1 className="text-2xl font-bold">My Website</h1>
       </div>
-        <img src={menu_close} alt="" className="nav-mob-close" />
-      {/* Navigation Menu */}
-      <ul className="nav-menu flex space-x-6 text-white cursor-pointer">
 
-        <li onClick={() => setMenu("home")}>
-          <AnchorLink className='anchor-link' offset={50} href='#home'>
-            <p>Home</p>
-            {menu === "home" && <img src={underline} alt="Underline" />}
-          </AnchorLink>
-        </li>
-        <li onClick={() => setMenu("about")}>
-          <AnchorLink className='anchor-link' offset={50} href='#about'>
-            <p>About Me</p>
-            {menu === "about" && <img src={underline} alt="Underline" />}
-          </AnchorLink>
-        </li>
-        <li onClick={() => setMenu("services")}>
-          <AnchorLink className='anchor-link' offset={50} href='#services'>
-            <p>Services</p>
-            {menu === "services" && <img src={underline} alt="Underline" />}
-          </AnchorLink>
-        </li>
-        <li onClick={() => setMenu("work")}>
-          <AnchorLink className='anchor-link' offset={50} href='#work'>
-            <p>Portfolio</p>
-            {menu === "work" && <img src={underline} alt="Underline" />}
-          </AnchorLink>
-        </li>
-        <li onClick={() => setMenu("contact")}>
-          <AnchorLink className='anchor-link' offset={50} href='#contact'>
-            <p>Contact</p>
-            {menu === "contact" && <img src={underline} alt="Underline" />}
-          </AnchorLink>
-        </li>
+      <button
+        onClick={toggleDarkMode}
+        className="p-2 rounded-lg bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-white"
+      >
+        {darkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
+      </button>
+
+      <ul className="nav-menu hidden sm:flex space-x-6 text-white cursor-pointer mx-auto">
+        {['home', 'about', 'services', 'portfolio', 'contact'].map((item) => (
+          <li key={item} onClick={() => setMenu(item)}>
+            <AnchorLink
+              className="anchor-link"
+              offset={50}
+              href={item === 'portfolio' ? '#my-work' : `#${item}`}
+            >
+              <div
+                className={`px-6 py-3 rounded-lg transition-all transform hover:bg-gradient-to-r hover:from-sky-500 hover:to-blue-500 ${
+                  menu === item ? 'bg-gradient-to-r from-sky-500 to-blue-500' : 'bg-transparent'
+                }`}
+              >
+                <p className="text-white">
+                  {item.charAt(0).toUpperCase() + item.slice(1)}
+                </p>
+              </div>
+            </AnchorLink>
+          </li>
+        ))}
       </ul>
-
-      {/* Connect Button */}
-      <AnchorLink className='anchor-link' offset={50} href='#contact'>
-        <button className="nav-connect bg-gradient-to-r from-blue-700 to-blue-400 text-white px-4 py-2 rounded-md hover:from-blue-600 hover:to-blue-300 transition-all duration-300 cursor-pointer">
-          Connect With Me
-        </button>
-      </AnchorLink>
-    </div>
+    </nav>
   );
 };
 
